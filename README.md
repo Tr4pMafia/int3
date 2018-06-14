@@ -1,7 +1,7 @@
-# Bareflank Hypervisor Starter Kit
-
+# Bareflank Hypervisor Trap Interruption
+This project is under development.
 ## Description
-Starter kit for Current Version of Bareflank Hypervisor
+Trap Interruption for Current Version of Bareflank Hypervisor
 
 ## Compilation / Usage
 
@@ -9,7 +9,7 @@ To setup our extension, run the following (assuming Linux):
 
 ```
 mkdir build; cd build
-cmake ../hypervisor -DDEFAULT_VMM=starter_vmm -DEXTENSION=../starter_kit
+cmake ../hypervisor -DDEFAULT_VMM=starter_vmm -DEXTENSION=../trap_interrupt
 make -j<# cores + 1>
 ```
 
