@@ -17,12 +17,7 @@ static bool handle_interrupt_window(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs
     using namespace ::intel_x64::vmcs::idt_vectoring_information;
     std::string msg = "mafia";
     dump(0, &msg);
-    return true;
-}
-static bool handle_cpuid_mafia(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
-{
-    bfdebug_info(0, "MAFIA CPUID TRAP");
-    return true;
+    return advance(vmcs);
 }
 
 static bool handle_taskswitch(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
@@ -31,7 +26,7 @@ static bool handle_taskswitch(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
     using namespace ::intel_x64::vmcs;
     std::string msg = "mafia";
     exit_reason::basic_exit_reason::dump(0, &msg);
-    return true;
+    return advance(vmcs);
 }
 
 class exit_handler_mafia : public bfvmm::intel_x64::exit_handler
@@ -48,9 +43,6 @@ public:
         );
         add_handler(exit_reason::basic_exit_reason::task_switch,
             handler_delegate_t::create<handle_taskswitch>()
-        );
-        add_handler(exit_reason::basic_exit_reason::cpuid,
-            handler_delegate_t::create<handle_cpuid_mafia>()
         );
     }
 };
