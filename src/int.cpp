@@ -19,13 +19,18 @@ static bool handle_interrupt_window(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs
     dump(0, &msg);
     return true;
 }
+static bool handle_cpuid_mafia(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
+{
+    bfdebug_info(0, "MAFIA CPUID TRAP");
+    return true;
+}
 
 static bool handle_taskswitch(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
 {
     bfdebug_info(0, "TASK SWTICH");
     using namespace ::intel_x64::vmcs;
     std::string msg = "mafia";
-    exit_reason::basic_exit_reason::dump(0, &msg):
+    exit_reason::basic_exit_reason::dump(0, &msg);
     return true;
 }
 
@@ -43,6 +48,9 @@ public:
         );
         add_handler(exit_reason::basic_exit_reason::task_switch,
             handler_delegate_t::create<handle_taskswitch>()
+        );
+        add_handler(exit_reason::basic_exit_reason::cpuid,
+            handler_delegate_t::create<handle_cpuid_mafia>()
         );
     }
 };
