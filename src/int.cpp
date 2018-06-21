@@ -15,8 +15,6 @@ namespace intel_x64
 static bool handle_interrupt_window(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
 {
     using namespace ::intel_x64::vmcs::idt_vectoring_information;
-    if(interruption_type::get() != interruption_type::software_interrupt) return true;
-    auto rax = vmcs->save_state()->rax;
     std::string msg = "mafia"
     dump(0, &msg);
     return true;
