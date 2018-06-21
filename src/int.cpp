@@ -34,7 +34,7 @@ class exit_handler_mafia : public bfvmm::intel_x64::exit_handler
 {
 public:
     exit_handler_mafia(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
-    : exit_handler(vmcs)
+    : bfvmm::intel_x64::exit_handler{vmcs}
     {
         using namespace ::intel_x64::vmcs;
         bfdebug_info(0, "mafia hype you");
@@ -46,13 +46,14 @@ public:
             handler_delegate_t::create<handle_taskswitch>()
         );
     }
+    ~exit_handler_mafia() = default;
 };
 
 class mafia_vcpu : public bfvmm::intel_x64::vcpu
 {
 public:
     mafia_vcpu(vcpuid::type id)
-    : vcpu(id)
+    : bfvmm::intel_x64::vcpu{id}
     {
         m_exit_handler_mafia = std::make_unique<mafia::intel_x64::exit_handler_mafia>(vmcs());
     }
