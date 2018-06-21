@@ -14,6 +14,7 @@ namespace intel_x64
 
 static bool handle_interrupt_window(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
 {
+    bfdebug_info(0, "INTINT");
     using namespace ::intel_x64::vmcs::idt_vectoring_information;
     std::string msg = "mafia";
     dump(0, &msg);
