@@ -13,32 +13,10 @@ namespace intel_x64
 {
 
 static bool
-handle_cpuid_mafia(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
+handle_int(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
 {
-    if (vmcs->save_state()->rax == 0xBF01) {
-        bfdebug_info(0, "[MAFIA] host os is" bfcolor_green " now " bfcolor_end "in a vm");
-        return advance(vmcs);
-    }
-
-    if (vmcs->save_state()->rax == 0xBF00) {
-        bfdebug_info(0, "[MAFIA] host os is" bfcolor_red " not " bfcolor_end "in a vm");
-        return advance(vmcs);
-    }
-
-    auto ret =
-        ::x64::cpuid::get(
-            gsl::narrow_cast<::x64::cpuid::field_type>(vmcs->save_state()->rax),
-            gsl::narrow_cast<::x64::cpuid::field_type>(vmcs->save_state()->rbx),
-            gsl::narrow_cast<::x64::cpuid::field_type>(vmcs->save_state()->rcx),
-            gsl::narrow_cast<::x64::cpuid::field_type>(vmcs->save_state()->rdx)
-        );
-
-    vmcs->save_state()->rax = ret.rax;
-    vmcs->save_state()->rbx = ret.rbx;
-    vmcs->save_state()->rcx = ret.rcx;
-    vmcs->save_state()->rdx = ret.rdx;
-
-    return advance(vmcs);
+    bfdebug_info(0, "INT");
+    return false;
 }
 
 class exit_handler_mafia : public bfvmm::intel_x64::exit_handler
@@ -50,8 +28,8 @@ public:
         using namespace ::intel_x64::vmcs;
         bfdebug_info(0, "mafia hype you");
         add_handler(
-            exit_reason::basic_exit_reason::cpuid,
-            handler_delegate_t::create<mafia::intel_x64::handle_cpuid_mafia>()
+            exit_reason::basic_exit_reason::interrupt_window,
+            handler_delegate_t::create<mafia::intel_x64::handle_int>()
         );
     }
     ~exit_handler_mafia() = default;
