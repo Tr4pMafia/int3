@@ -26,21 +26,9 @@ handle_cpuid_mafia(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
     return false;
 }
 static bool
-handle_interrupt_window(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
-{
-    bfdebug_info(0, "interrupt_window");
-    return false;
-}
-static bool
 handle_exception_or_non_maskable_interrupt(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
 {
     bfdebug_info(0, "exception_or_non_maskable_interrupt");
-    return false;
-}
-static bool
-handle_external_interrupt(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
-{
-    bfdebug_info(0, "external_interrupt");
     return false;
 }
 
@@ -53,16 +41,8 @@ public:
         using namespace ::intel_x64::vmcs;
         bfdebug_info(0, "mafia hype you");
         add_handler(
-            exit_reason::basic_exit_reason::interrupt_window,
-            handler_delegate_t::create<mafia::intel_x64::handle_interrupt_window>()
-        );
-        add_handler(
             exit_reason::basic_exit_reason::exception_or_non_maskable_interrupt,
             handler_delegate_t::create<mafia::intel_x64::handle_exception_or_non_maskable_interrupt>()
-        );
-        add_handler(
-            exit_reason::basic_exit_reason::external_interrupt,
-            handler_delegate_t::create<mafia::intel_x64::handle_external_interrupt>()
         );
         add_handler(
             exit_reason::basic_exit_reason::cpuid,
