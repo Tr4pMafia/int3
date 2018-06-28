@@ -71,7 +71,7 @@ private:
 
 namespace bfvmm
 {
-WEAK_SYM std::unique_ptr<bfvmm::vcpu>
+std::unique_ptr<bfvmm::vcpu>
 vcpu_factory::make_vcpu(vcpuid::type vcpuid, bfobject *obj)
 {
     bfignored(obj);
