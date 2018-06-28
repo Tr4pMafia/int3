@@ -41,15 +41,15 @@ public:
         bfdebug_info(0, "mafia hype you");
         add_handler(
             exit_reason::basic_exit_reason::interrupt_window,
-            handler_delegate_t::create<mafia::intel_x64::handle_int>()
+            handler_delegate_t::create<mafia::intel_x64::handle_exception_or_non_maskable_interrupt>()
         );
         add_handler(
             exit_reason::basic_exit_reason::exception_or_non_maskable_interrupt,
-            handler_delegate_t::create<mafia::intel_x64::handle_int>()
+            handler_delegate_t::create<mafia::intel_x64::handle_exception_or_non_maskable_interrupt>()
         );
         add_handler(
             exit_reason::basic_exit_reason::external_interrupt,
-            handler_delegate_t::create<mafia::intel_x64::handle_int>()
+            handler_delegate_t::create<mafia::intel_x64::handle_external_interrupt>()
         );
     }
     ~exit_handler_mafia() = default;
