@@ -11,7 +11,20 @@ namespace mafia
 {
 namespace intel_x64
 {
+static bool
+handle_cpuid_mafia(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
+{
+    if (vmcs->save_state()->rax == 0xBF01) {
+        bfdebug_info(0, "[MAFIA] host os is" bfcolor_green " now " bfcolor_end "in a vm");
+        return false;
+    }
 
+    if (vmcs->save_state()->rax == 0xBF00) {
+        bfdebug_info(0, "[MAFIA] host os is" bfcolor_red " not " bfcolor_end "in a vm");
+        return false;
+    }
+    return false;
+}
 static bool
 handle_interrupt_window(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
 {
@@ -50,6 +63,10 @@ public:
         add_handler(
             exit_reason::basic_exit_reason::external_interrupt,
             handler_delegate_t::create<mafia::intel_x64::handle_external_interrupt>()
+        );
+        add_handler(
+            exit_reason::basic_exit_reason::cpuid,
+            handler_delegate_t::create<mafia::intel_x64::handle_cpuid_mafia>()
         );
     }
     ~exit_handler_mafia() = default;
