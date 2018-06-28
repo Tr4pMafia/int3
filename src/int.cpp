@@ -54,7 +54,7 @@ public:
         bfdebug_info(0, "mafia hype you");
         add_handler(
             exit_reason::basic_exit_reason::interrupt_window,
-            handler_delegate_t::create<mafia::intel_x64::handle_exception_or_non_maskable_interrupt>()
+            handler_delegate_t::create<mafia::intel_x64::handle_interrupt_window>()
         );
         add_handler(
             exit_reason::basic_exit_reason::exception_or_non_maskable_interrupt,
@@ -80,6 +80,7 @@ public:
     {
         m_exit_handler_mafia = std::make_unique<mafia::intel_x64::exit_handler_mafia>(vmcs());
     }
+    ~mafia_vcpu() = default;
     mafia::intel_x64::exit_handler_mafia *exit_handler()
     { return m_exit_handler_mafia.get(); }
 private:
