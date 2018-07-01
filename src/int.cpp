@@ -29,7 +29,7 @@ static bool
 handle_exception_or_non_maskable_interrupt(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
 {
     bfdebug_info(0, "exception_or_non_maskable_interrupt");
-    return false;
+    return advance(vmcs);
 }
 
 class exit_handler_mafia : public bfvmm::intel_x64::exit_handler
@@ -59,7 +59,8 @@ public:
     : bfvmm::intel_x64::vcpu{id}
     {
         m_exit_handler_mafia = std::make_unique<mafia::intel_x64::exit_handler_mafia>(vmcs());
-        intel_x64::vmcs::exception_bitmap::dump(0);
+        ::intel_x64::vmcs::exception_bitmap::set((1u << 3));
+        ::intel_x64::vmcs::exception_bitmap::dump(0);
     }
     ~mafia_vcpu() = default;
     mafia::intel_x64::exit_handler_mafia *exit_handler()
