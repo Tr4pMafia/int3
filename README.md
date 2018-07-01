@@ -1,7 +1,7 @@
-# Bareflank Hypervisor Trap Interruption
-This project is under development.
+# Bareflank Hypervisor Trap INT3
+This project is for trapping INT3.
 ## Description
-Trap Interruption for Current Version of Bareflank Hypervisor
+Trap INT3 for Current Version of Bareflank Hypervisor
 
 ## Compilation / Usage
 
@@ -9,7 +9,7 @@ To setup our extension, run the following (assuming Linux):
 
 ```
 mkdir build; cd build
-cmake ../hypervisor -DDEFAULT_VMM=starter_vmm -DEXTENSION=../trap_interrupt
+cmake ../hypervisor -DDEFAULT_VMM=starter_vmm -DEXTENSION=../int3
 make -j<# cores + 1>
 ```
 
