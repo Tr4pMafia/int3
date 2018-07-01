@@ -59,6 +59,7 @@ public:
     : bfvmm::intel_x64::vcpu{id}
     {
         m_exit_handler_mafia = std::make_unique<mafia::intel_x64::exit_handler_mafia>(vmcs());
+        intel_x64::vmcs::exception_bitmap::dump(0);
     }
     ~mafia_vcpu() = default;
     mafia::intel_x64::exit_handler_mafia *exit_handler()
