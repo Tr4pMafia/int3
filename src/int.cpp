@@ -28,6 +28,7 @@ handle_cpuid_mafia(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
 static bool
 handle_exception_or_non_maskable_interrupt(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
 {
+    ::intel_x64::vmcs::vm_exit_interruption_information::dump(0);
     bfdebug_info(0, "exception_or_non_maskable_interrupt");
     return advance(vmcs);
 }
