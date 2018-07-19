@@ -51,6 +51,7 @@ public:
         );
     }
     ~mafia_vcpu() = default;
+};
 }
 }
 
