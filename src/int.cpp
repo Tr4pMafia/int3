@@ -32,8 +32,17 @@ namespace intel_x64
 static bool
 handle_exception_or_non_maskable_interrupt(gsl::not_null<bfvmm::intel_x64::vmcs *> vmcs)
 {
-    ::intel_x64::vmcs::vm_exit_interruption_information::dump(0);
+    using namespace ::intel_x64::vmcs:;
+    vm_exit_interruption_information::dump(0);
     bfdebug_info(0, "exception_or_non_maskable_interrupt");
+
+    // reinject
+    vm_entry_interruption_information::vector::set(vm_exit_interruption_information::vector::get());
+    vm_entry_interruption_information::interruption_type::set(vm_exit_interruption_information::interruption_type::get());
+    vm_entry_interruption_information::deliver_error_code_bit::set(vm_exit_interruption_information::error_code_valid::get());
+    vm_entry_interruption_information::reserved::set(vm_exit_interruption_information::reserved::get());
+    vm_entry_interruption_information::valid_bit::set(vm_exit_interruption_information::valid_bit::get());
+
     return advance(vmcs);
 }
 
