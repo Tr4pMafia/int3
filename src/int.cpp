@@ -43,6 +43,7 @@ handle_exception_or_non_maskable_interrupt(gsl::not_null<bfvmm::intel_x64::vmcs 
     vm_entry_interruption_information::reserved::set(vm_exit_interruption_information::reserved::get());
     vm_entry_interruption_information::valid_bit::set(vm_exit_interruption_information::valid_bit::is_enabled());
 
+    vm_entry_instruction_length::set(vm_exit_instruction_length::get());
     return advance(vmcs);
 }
 
